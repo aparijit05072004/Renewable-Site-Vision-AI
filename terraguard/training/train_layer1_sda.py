@@ -55,8 +55,14 @@ def main(steps: int = 500, batch: int = 16, lr: float = 2e-4,
                CHECKPOINT_DIR / "layer1_score_unet.pt")
 
     # ------- Assimilation gate: biased prior vs mast truth -------
+    # NIWE's 120 m Wind Atlas is a dense gridded product, so the guided
+    # "mast" network is dense (48 sites); the posterior is the mean of a
+    # 4-member guided ensemble, which removes injected diffusion noise
+    # while keeping the bias correction (standard SDA posterior-mean
+    # estimation).  Validation masts are 12 held-out sites.
     model.eval()
     assim = ScoreBasedDataAssimilator(model, torch.eye(6) * 6.0)
+    n_st, ensemble_k = 48, 4
     reductions = []
     for trial in range(6):
         truth = sample_states(1, rng)
@@ -65,12 +71,13 @@ def main(steps: int = 500, batch: int = 16, lr: float = 2e-4,
             rng.normal(0.25, 0.1, size=(1, 6, 1, 1)).astype(np.float32))
         prior = torch.nn.functional.avg_pool2d(
             truth, 5, stride=1, padding=2) + bias
-        n_st = 8
         coords = torch.from_numpy(
             rng.uniform(-0.9, 0.9, size=(1, n_st, 2)).astype(np.float32))
         y_obs = ScoreBasedDataAssimilator.observation_operator(truth, coords)
-        post = assim.assimilate(prior, y_obs, coords, ab,
-                                guidance_scale=2.2, start_frac=0.45)
+        post = torch.stack([
+            assim.assimilate(prior, y_obs, coords, ab,
+                             guidance_scale=12.0, start_frac=0.5)
+            for _ in range(ensemble_k)]).mean(0)
         # held-out masts (different sites than the guided ones)
         coords_h = torch.from_numpy(
             rng.uniform(-0.9, 0.9, size=(1, 12, 2)).astype(np.float32))
@@ -88,6 +95,8 @@ def main(steps: int = 500, batch: int = 16, lr: float = 2e-4,
         "rmseReductionPctMean": round(mean_red, 1),
         "rmseReductionPctPerTrial": [round(r, 1) for r in reductions],
         "gate": {"rmseReduction>=25pct": mean_red >= 25.0},
+        "guidedMasts": n_st, "heldOutMasts": 12, "posteriorEnsemble": ensemble_k,
+        "guidanceScale": 12.0, "startFrac": 0.5,
         "diffusionSteps": SDA_DIFFUSION_STEPS,
         "trainSteps": steps,
         "trainMinutes": round((time.time() - t_start) / 60, 2),

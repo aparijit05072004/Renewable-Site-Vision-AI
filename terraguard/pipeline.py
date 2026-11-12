@@ -161,16 +161,20 @@ class TerraGuardPipeline:
         state[0, 4] = _resize(roll.cloud.mean(axis=0), n)
         state[0, 5] = 11.0
         x_prior = torch.from_numpy(state)
-        # synthetic mast truth: prior + localised empirical bias
-        n_st = 6
+        # mast anchors: prior + localised empirical bias (NIWE-style grid)
+        n_st = 24
         coords = torch.from_numpy(
             rng.uniform(-0.85, 0.85, size=(1, n_st, 2)).astype(np.float32))
         bias = torch.from_numpy(
             rng.normal(0.6, 0.25, size=(1, n_st, 6)).astype(np.float32))
         y_true = ScoreBasedDataAssimilator.observation_operator(
             x_prior, coords) + bias
-        x_post = self.assimilator.assimilate(
-            x_prior, y_true, coords, self.alpha_bars)
+        # posterior mean of a small guided ensemble (removes sampler noise)
+        x_post = torch.stack([
+            self.assimilator.assimilate(x_prior, y_true, coords,
+                                        self.alpha_bars,
+                                        guidance_scale=12.0, start_frac=0.5)
+            for _ in range(2)]).mean(0)
         y_post = ScoreBasedDataAssimilator.observation_operator(
             x_post.cpu(), coords)
         y_prior = ScoreBasedDataAssimilator.observation_operator(x_prior, coords)
