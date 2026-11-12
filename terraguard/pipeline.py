@@ -32,6 +32,10 @@ from .layer3_spatial.exclusion_engine import evaluate_exclusions
 
 VON_KARMAN = 0.41
 
+# channel normalisation used at CorrDiff training time (train_layer2_corrdiff)
+CH_MEAN = np.array([5.5, 0.0, 28.0, 0.0, 0.4, 12.0], dtype=np.float32)
+CH_SCALE = np.array([3.0, 3.0, 3.0, 5.0, 0.3, 2.0], dtype=np.float32)
+
 
 def log_law_hub_speed(v_ref: np.ndarray, z0: float, z_ref: float = 10.0,
                       z_hub: float = HUB_HEIGHT_M) -> np.ndarray:
@@ -196,14 +200,14 @@ class TerraGuardPipeline:
                            np.zeros_like(roll.u10.mean(0)),
                            roll.cloud.mean(0),
                            np.full_like(roll.u10.mean(0), 11.0)]).astype(np.float32)
-        factor = FINE_GRID // coarse.shape[-1]
         up = np.stack([_resize(c, FINE_GRID) for c in coarse])
         z0_proxy = np.gradient(dem_norm)[0]
         topo = np.stack([dem_norm, z0_proxy]).astype(np.float32)
-        x = torch.from_numpy(up)[None]
+        up_n = (up - CH_MEAN[:, None, None]) / CH_SCALE[:, None, None]
+        x = torch.from_numpy(up_n.astype(np.float32))[None]
         z = torch.from_numpy(topo)[None]
-        fine = self.corrdiff.sample(x, z, n_steps=8)
-        return fine[0].cpu().numpy()
+        fine_n = self.corrdiff.sample(x, z, n_steps=8)[0].cpu().numpy()
+        return fine_n * CH_SCALE[:, None, None] + CH_MEAN[:, None, None]
 
     # ------------------------------------------------------------------
     @torch.no_grad()

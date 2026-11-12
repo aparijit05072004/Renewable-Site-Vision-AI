@@ -10,6 +10,18 @@ from ..layer3_spatial.context_spatial_gnn import FEATURES  # noqa: F401
 from .financials import project_financials
 
 
+def _pyify(obj):
+    """Recursively convert numpy scalars to native Python types."""
+    import numpy as _np
+    if isinstance(obj, dict):
+        return {k: _pyify(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_pyify(v) for v in obj]
+    if isinstance(obj, _np.generic):
+        return obj.item()
+    return obj
+
+
 def synthesize_report(analysis: dict, thread_id: str) -> dict:
     l0 = analysis["layer0"]
     atm = analysis["atmosphere"]
@@ -94,7 +106,7 @@ def synthesize_report(analysis: dict, thread_id: str) -> dict:
             "status": "ARMED",
         },
     }
-    return report
+    return _pyify(report)
 
 
 # ----------------------------------------------------------------------

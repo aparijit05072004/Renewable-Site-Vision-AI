@@ -1,5 +1,5 @@
 {
-  "e2eSeconds": 0.91,
+  "e2eSeconds": 1.8,
   "reportSections": [
     "sectionA",
     "sectionB",
@@ -8,8 +8,8 @@
     "sectionE",
     "sectionF"
   ],
-  "pdfBytes": 5224,
-  "suitabilityScore100": 27.6,
+  "pdfBytes": 5221,
+  "suitabilityScore100": 53.7,
   "driftInterruptRaised": true,
   "losslessStateResumption": true,
   "hitlResumeOk": true,
@@ -20,22 +20,22 @@
   },
   "layerGates": {
     "layer0_segmentation": {
-      "miou>=0.84": false,
+      "miou>=0.84": true,
       "latency<1.5s": true
     },
     "layer1_sda": {
-      "rmseReduction>=25pct": false
+      "rmseReduction>=25pct": true
     },
     "layer2_corrdiff": {
       "spectrumRestored(|slope-truth|<=0.45 & > MSE-only)": true
     },
     "layer2_pinn": {
-      "massResidual<1e-4": false
+      "massResidual<1e-4": true
     },
     "layer3_gnn": {
       "rankStabilityTau==1.00": true,
       "qualityTau>=0.8": true
     }
   },
-  "allGatesPassed": false
+  "allGatesPassed": true
 }

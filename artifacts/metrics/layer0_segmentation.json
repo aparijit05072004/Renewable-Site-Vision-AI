@@ -1,20 +1,20 @@
 {
-  "gateMiouBarrenScrubWaterForest": 0.8393,
+  "gateMiouBarrenScrubWaterForest": 0.8721,
   "perClassIoU": {
-    "0": 0.6203,
-    "1": 0.7734,
-    "2": 0.7827,
-    "3": 0.9084,
-    "4": 0.7947,
-    "5": 0.8712,
-    "6": 0.3385
+    "0": 0.6945,
+    "1": 0.811,
+    "2": 0.8233,
+    "3": 0.9198,
+    "4": 0.8389,
+    "5": 0.9063,
+    "6": 0.4704
   },
-  "latency1024S": 0.043,
+  "latency1024S": 0.056,
   "gate": {
-    "miou>=0.84": false,
+    "miou>=0.84": true,
     "latency<1.5s": true
   },
-  "trainSteps": 240,
-  "trainMinutes": 1.05,
+  "trainSteps": 700,
+  "trainMinutes": 3.5,
   "params": 998615
 }

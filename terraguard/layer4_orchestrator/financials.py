@@ -17,7 +17,7 @@ def solar_cuf(geff_kwh_m2_day: float) -> float:
 
 def wind_cuf(mean_speed_120m: float) -> float:
     """CUF from mean hub-height speed via simplified power-curve integral."""
-    return float(np.clip(0.087 * mean_speed_120m - 0.12, 0.04, 0.55))
+    return float(np.clip(0.087 * mean_speed_120m - 0.12, 0.04, 0.45))
 
 
 def irr(cashflows: list[float], lo: float = -0.5, hi: float = 1.5) -> float:
