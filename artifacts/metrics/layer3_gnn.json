@@ -1,0 +1,35 @@
+{
+  "kendallTauVsGroundTruthYield": 0.9391,
+  "rankStabilityTauTop25Min": 1.0,
+  "rankStabilityTauPerTrial": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "gate": {
+    "rankStabilityTau==1.00": true,
+    "qualityTau>=0.8": true
+  },
+  "features": [
+    "wpd_120m",
+    "geff_solar",
+    "buildable_ratio",
+    "terrain_slope_deg",
+    "substation_dist_km",
+    "soiling_pct",
+    "highway_dist_km"
+  ],
+  "learnedFuzzyCenters": [
+    320.405,
+    4.396,
+    0.447,
+    8.082,
+    18.037,
+    4.05,
+    11.975
+  ],
+  "trainMinutes": 0.06,
+  "params": 73327
+}

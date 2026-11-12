@@ -1,0 +1,13 @@
+{
+  "psdSlopeTruth": -1.619,
+  "psdSlopeCorrDiff": -1.205,
+  "psdSlopeRegressionOnly": -2.17,
+  "normalizedRmseU": 0.6462,
+  "gate": {
+    "spectrumRestored(|slope-truth|<=0.45 & > MSE-only)": true
+  },
+  "downscaleFactor": 8,
+  "fineGrid": 128,
+  "trainMinutes": 2.62,
+  "params": 1466612
+}

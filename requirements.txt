@@ -1,0 +1,21 @@
+# TerraGuard-v2 backend — core (CPU-complete)
+torch>=2.3
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+pillow>=10.0
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+reportlab>=4.1
+
+# Optional — production integrations (GPU / geospatial / agents)
+# rasterio>=1.3            # GeoTIFF CRS + affine resolver (Layer 0)
+# transformers>=4.40       # nvidia/segformer-b2 fine-tuning path
+# earth2studio             # GraphCast + Aurora pretrained rollouts (Layer 2A)
+# xarray; zarr; gcsfs      # ARCO-ERA5 zero-queue streaming
+# pystac-client; odc-stac  # Copernicus DEM / ESA WorldCover STAC pulls
+# torch-geometric          # drop-in GATv2 (self-contained impl included)
+# langgraph>=0.2           # production StateGraph + PostgresSaver
+# psycopg[pool]            # PostgreSQL 16 + PostGIS 3.4
+# anthropic>=1.0           # TERRA assistant Claude tier

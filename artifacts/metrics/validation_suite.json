@@ -1,0 +1,41 @@
+{
+  "e2eSeconds": 0.91,
+  "reportSections": [
+    "sectionA",
+    "sectionB",
+    "sectionC",
+    "sectionD",
+    "sectionE",
+    "sectionF"
+  ],
+  "pdfBytes": 5224,
+  "suitabilityScore100": 27.6,
+  "driftInterruptRaised": true,
+  "losslessStateResumption": true,
+  "hitlResumeOk": true,
+  "gate": {
+    "e2e<6s": true,
+    "driftInterrupt": true,
+    "losslessResume": true
+  },
+  "layerGates": {
+    "layer0_segmentation": {
+      "miou>=0.84": false,
+      "latency<1.5s": true
+    },
+    "layer1_sda": {
+      "rmseReduction>=25pct": false
+    },
+    "layer2_corrdiff": {
+      "spectrumRestored(|slope-truth|<=0.45 & > MSE-only)": true
+    },
+    "layer2_pinn": {
+      "massResidual<1e-4": false
+    },
+    "layer3_gnn": {
+      "rankStabilityTau==1.00": true,
+      "qualityTau>=0.8": true
+    }
+  },
+  "allGatesPassed": false
+}

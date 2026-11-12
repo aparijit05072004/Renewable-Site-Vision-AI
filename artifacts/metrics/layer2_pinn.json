@@ -1,0 +1,11 @@
+{
+  "massResidualRms": 6.850488603049598e-07,
+  "momentumXResidualRms": 5.8835015296936035,
+  "ridgeVsValleySpeedupPct": 782.8,
+  "gate": {
+    "massResidual<1e-4": true
+  },
+  "trainSteps": 10,
+  "trainMinutes": 0.06,
+  "params": 41860
+}

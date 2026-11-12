@@ -1,0 +1,18 @@
+{
+  "rmseReductionPctMean": -15.5,
+  "rmseReductionPctPerTrial": [
+    -12.1,
+    9.1,
+    -39.9,
+    -36.4,
+    -15.3,
+    1.3
+  ],
+  "gate": {
+    "rmseReduction>=25pct": false
+  },
+  "diffusionSteps": 64,
+  "trainSteps": 500,
+  "trainMinutes": 1.13,
+  "params": 1885014
+}
