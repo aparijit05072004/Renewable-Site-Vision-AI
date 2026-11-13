@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { DEMO, demoChat } from "../demoApi.js";
 
 const WELCOME =
   "Hey, I'm TERRA ⚡ — the TerraGuard site-intelligence copilot.\n\n" +
@@ -33,6 +34,11 @@ export default function AssistantPanel({ threadId }) {
     setMsgs((m) => [...m, { role: "user", text: q }]);
     setTyping(true);
     try {
+      if (DEMO) {
+        await new Promise((r) => setTimeout(r, 450));
+        await typeOut(demoChat(q));
+        return;
+      }
       const res = await fetch("/api/v1/assistant/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

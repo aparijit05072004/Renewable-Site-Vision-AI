@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { DEMO, demoAnalyze } from "../demoApi.js";
 
 const STAGES = [
   "Layer 0 · Vision segmentation & buildable masks",
@@ -18,9 +19,9 @@ export default function ImageDropzone({ onAnalyzed, onError }) {
   const [fileName, setFileName] = useState(null);
 
   async function analyze(file) {
-    if (!file || busy) return;
+    if ((!file && !DEMO) || busy) return;
     setBusy(true);
-    setFileName(file.name);
+    setFileName(DEMO ? "sample-parcel.png (demo)" : file.name);
     onError(null);
     let s = 0;
     setStage(0);
@@ -29,6 +30,11 @@ export default function ImageDropzone({ onAnalyzed, onError }) {
       setStage(s);
     }, 900);
     try {
+      if (DEMO) {
+        await new Promise((r) => setTimeout(r, 4600));
+        onAnalyzed(await demoAnalyze());
+        return;
+      }
       const fd = new FormData();
       fd.append("file", file);
       if (lat && lon) {
@@ -58,9 +64,16 @@ export default function ImageDropzone({ onAnalyzed, onError }) {
       <h2>
         Land Image Ingestion <span className="tag">LAYER 0</span>
       </h2>
+      {DEMO && (
+        <div className="demo-note">
+          ▶ Static demo — click the dropzone to replay the trained cascade on
+          the bundled Gadag (Karnataka) sample parcel. Clone the repo for live
+          uploads.
+        </div>
+      )}
       <div
         className={`dropzone ${drag ? "drag" : ""} ${busy ? "busy" : ""}`}
-        onClick={() => fileRef.current?.click()}
+        onClick={() => (DEMO ? analyze(null) : fileRef.current?.click())}
         onDragOver={(e) => {
           e.preventDefault();
           setDrag(true);

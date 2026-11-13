@@ -14,6 +14,10 @@
 ![Validation Gates](https://img.shields.io/badge/validation_gates-7%2F7_passing-059669)
 ![Tests](https://img.shields.io/badge/pytest-12%2F12_passing-059669)
 ![E2E](https://img.shields.io/badge/image→report-1.8s-0284c7)
+[![Live Demo](https://img.shields.io/badge/🌐_LIVE_DEMO-aparijit05072004.github.io-e11d48?style=for-the-badge)](https://aparijit05072004.github.io/Renewable-Site-Vision-AI/)
+
+### 🔗 **[▶ Try the live dashboard →](https://aparijit05072004.github.io/Renewable-Site-Vision-AI/)**
+*Static GitHub Pages demo: replay the full trained L0–L4 cascade on a bundled Gadag (Karnataka) wind-belt parcel — segmentation & layout overlays, micro-climate heatmaps, the 6-section investor report, and the TERRA assistant grounded in the precomputed report. Clone the repo (`docker compose up`) for live image uploads, PDF export and agent monitoring.*
 
 <img src="docs/images/dashboard-terra-assistant.png" alt="TerraGuard-v2 dashboard with TERRA AI assistant" width="920"/>
 
